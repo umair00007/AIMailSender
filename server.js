@@ -60,46 +60,8 @@ app.post("/generate-email", async (req, res) => {
   }
 });
 
-// POST /send-email
-// app.post("/send-email", async (req, res) => {
-//   console.log("first");
-//   const { recipients, emailBody } = req.body;
-
-//   if (!process.env.MY_EMAIL || !process.env.MY_PASSWORD) {
-//     return res.status(500).send("Missing email credentials in .env");
-//   }
-
-//   try {
-//     const transporter = nodemailer.createTransport({
-//       service: "gmail",
-//       auth: {
-//         user: process.env.MY_EMAIL,
-//         pass: process.env.MY_PASSWORD,
-//       },
-//     });
-
-//     const mailOptions = {
-//       from: process.env.MY_EMAIL,
-//       to: recipients,
-//       subject: "AI Generated Email",
-//       text: emailBody,
-//     };
-
-//     const info = await transporter.sendMail(mailOptions);
-//     console.log("✅ Email sent:", info.response);
-//     res.send("Email sent: " + info.response);
-//   } catch (error) {
-//     console.error("❌ Email sending error:", error);
-//     res.status(500).send("Failed to send email: " + error.toString());
-//   }
-// });
 app.post("/send-email", async (req, res) => {
-  console.log("📨 Request received at /send-email");
-
   const { recipients, emailBody } = req.body;
-  console.log("➡️ Recipients:", recipients);
-  console.log("➡️ Email Body:", emailBody);
-
   if (!process.env.MY_EMAIL || !process.env.MY_PASSWORD) {
     return res.status(500).send("Missing email credentials in .env");
   }
@@ -121,7 +83,6 @@ app.post("/send-email", async (req, res) => {
     };
 
     const info = await transporter.sendMail(mailOptions);
-    console.log("✅ Email sent:", info.response);
     res.send("Email sent: " + info.response);
   } catch (error) {
     console.error("Email sending error:", error);
@@ -131,5 +92,4 @@ app.post("/send-email", async (req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
