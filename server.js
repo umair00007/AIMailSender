@@ -124,7 +124,7 @@ app.post("/send-email", async (req, res) => {
     console.log("✅ Email sent:", info.response);
     res.send("Email sent: " + info.response);
   } catch (error) {
-    console.error("❌ Email sending error:", error);
+    console.error("Email sending error:", error);
     res.status(500).send("Failed to send email: " + error.toString());
   }
 });
