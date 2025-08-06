@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>AI Email Sender</title>
+  </head>
+  <body>
+    <h1>AI Email Sender</h1>
+    <form id="emailForm">
+      <label>Recipients (comma-separated):</label><br />
+      <input type="text" id="recipients" required /><br /><br />
+
+      <label>Prompt:</label><br />
+      <textarea id="prompt" rows="4" required></textarea><br /><br />
+
+      <button type="button" onclick="generateEmail()">Generate Email</button
+      ><br /><br />
+
+      <label>Generated Email:</label><br />
+      <textarea id="generatedEmail" rows="10"></textarea><br /><br />
+
+      <button type="submit">Send Email</button>
+    </form>
+
+    <script>
+      async function generateEmail() {
+        const prompt = document.getElementById("prompt").value;
+        const res = await fetch("http://localhost:3000/generate-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt }),
+        });
+        const data = await res.json();
+        document.getElementById("generatedEmail").value = data.email;
+      }
+
+      //   document
+      //     .getElementById("emailForm")
+      //     .addEventListener("submit", async (e) => {
+      //       e.preventDefault();
+      //       const recipients = document.getElementById("recipients").value;
+      //       const emailBody = document.getElementById("generatedEmail").value;
+
+      //       await fetch("http://localhost:3000/send-email", {
+      //         method: "POST",
+      //         headers: { "Content-Type": "application/json" },
+      //         body: JSON.stringify({ recipients, emailBody }),
+      //       });
+
+      //       alert("Email Sent!");
+      //     });
+      document
+        .getElementById("emailForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const recipients = document.getElementById("recipients").value;
+          const emailBody = document.getElementById("generatedEmail").value;
+
+          console.log("📤 Sending email to:", recipients); // ✅ Add this
+
+          const res = await fetch("http://localhost:3000/send-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ recipients, emailBody }),
+          });
+
+          const data = await res.text();
+          console.log("📥 Server response:", data);
+          alert("Email Sent!");
+        });
+    </script>
+  </body>
+</html>
